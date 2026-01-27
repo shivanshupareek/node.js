@@ -1,36 +1,29 @@
-// const http = require("http");
-// const fs = require("fs");
-// const path = require("path");
-//
-// const server =
-//     http.createServer((req, res) => {
-//         if (req.url === "/message") {
-//             const filePath = path.join(__dirname, "message.txt");
-//             const data = fs.readFileSync(filePath, "utf-8" );
-//             res.end(data);
-//         } else {
-//             res.end("oop, nothing to see here");
-//         }
-// })
-//
-// server.listen (3000, () => {
-//     console.log("Server running on http://localhost:3000");
-// });
 
+const http = require("http");
 
-const newHTTP = require("http");
+const server =
+    http.createServer( async (req, res) => {
 
-const secondServer =
-    newHTTP.createServer( async (req, res) => {
         if (req.url === "/api") {
-            const response = await fetch ("https://api.coindesk.com/v1/bpi/currentprice.json");
-            const data = await response.json();
-            res.end("bitcoin price is: $" + data.bpi.USD.rate);
+            try {
+                const response = await fetch("https://jsonplaceholder.typicode.com/todos/1");
+                const data = await response.json();
+
+                res.statusCode = 200;
+                res.setHeader("Content-type", "application/json")
+                res.end(JSON.stringify(data));
+            } catch ( e ) {
+                res.statusCode = 500;
+                res.end("API failed due to:" + e.message)
+            }
+
         } else {
-            res.end("error in fetching the data");
+            res.statusCode = 404;
+            res.end("not found");
         }
+
     });
 
-secondServer.listen( 3000, () => {
+server.listen( 3000, () => {
     console.log("server is running on http://localhost:3000");
 });
