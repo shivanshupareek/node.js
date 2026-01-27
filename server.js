@@ -1,18 +1,36 @@
-const http = require("http");
-const fs = require("fs");
-const path = require("path");
+// const http = require("http");
+// const fs = require("fs");
+// const path = require("path");
+//
+// const server =
+//     http.createServer((req, res) => {
+//         if (req.url === "/message") {
+//             const filePath = path.join(__dirname, "message.txt");
+//             const data = fs.readFileSync(filePath, "utf-8" );
+//             res.end(data);
+//         } else {
+//             res.end("oop, nothing to see here");
+//         }
+// })
+//
+// server.listen (3000, () => {
+//     console.log("Server running on http://localhost:3000");
+// });
 
-const server =
-    http.createServer((req, res) => {
-        if (req.url === "/message") {
-            const filePath = path.join(__dirname, "message.txt");
-            const data = fs.readFileSync(filePath, "utf-8" );
-            res.end(data);
+
+const newHTTP = require("http");
+
+const secondServer =
+    newHTTP.createServer( async (req, res) => {
+        if (req.url === "/api") {
+            const response = await fetch ("https://api.coindesk.com/v1/bpi/currentprice.json");
+            const data = await response.json();
+            res.end("bitcoin price is: $" + data.bpi.USD.rate);
         } else {
-            res.end("oop, nothing to see here");
+            res.end("error in fetching the data");
         }
-})
+    });
 
-server.listen (3000, () => {
-    console.log("Server running on http://localhost:3000");
+secondServer.listen( 3000, () => {
+    console.log("server is running on http://localhost:3000");
 });
