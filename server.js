@@ -27,14 +27,3 @@ const server =
 server.listen( 3000, () => {
     console.log("server is running on http://localhost:3000");
 });
-
-
-
-const details = {
-    name: "Shivanshu Pareek",
-    age: 26,
-    occupation: "Software Developer",
-    currentLocation: "Chennai",
-    currentTime: '13: 12: 19',
-
-    isAvailable: true,
